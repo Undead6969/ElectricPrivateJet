@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -25,7 +24,9 @@ const mockMemberships: Membership[] = [
       '24/7 customer support',
       'Standard catering options',
       'Flexible booking (72 hrs notice)'
-    ]
+    ],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
     id: '2',
@@ -42,7 +43,9 @@ const mockMemberships: Membership[] = [
       'Flexible booking (48 hrs notice)',
       'Dedicated customer manager',
       'Access to partner lounges'
-    ]
+    ],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
     id: '3',
@@ -61,7 +64,9 @@ const mockMemberships: Membership[] = [
       'Global lounge access',
       'Helicopter transfers',
       'Family member benefits'
-    ]
+    ],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   }
 ];
 
@@ -72,16 +77,13 @@ const MembershipPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    // Simulate loading
     setIsLoading(true);
     
-    // Simulate API call with setTimeout
     const timer = setTimeout(() => {
       setMemberships(mockMemberships);
       setIsLoading(false);
     }, 1000);
     
-    // Scroll to top when component mounts
     window.scrollTo(0, 0);
     
     return () => clearTimeout(timer);
@@ -109,7 +111,6 @@ const MembershipPage = () => {
       <Navbar />
       
       <main className="flex-grow">
-        {/* Hero Section */}
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div className="absolute inset-0 bg-hero-pattern bg-cover bg-center opacity-20"></div>
           <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/70 to-background"></div>
@@ -134,7 +135,6 @@ const MembershipPage = () => {
           </div>
         </section>
         
-        {/* Pricing Toggle */}
         <section className="py-10">
           <div className="container mx-auto px-4">
             <div className="flex justify-center mb-12">
@@ -162,10 +162,8 @@ const MembershipPage = () => {
               </div>
             </div>
             
-            {/* Pricing Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-6 mb-16">
               {isLoading ? (
-                // Skeleton loading
                 Array(3)
                   .fill(null)
                   .map((_, i) => (
@@ -252,7 +250,6 @@ const MembershipPage = () => {
           </div>
         </section>
         
-        {/* Features Section */}
         <section className="py-16 bg-night-900/50">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -377,7 +374,6 @@ const MembershipPage = () => {
           </div>
         </section>
         
-        {/* FAQ Section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-12">
@@ -445,7 +441,6 @@ const MembershipPage = () => {
           </div>
         </section>
         
-        {/* CTA Section */}
         <section className="py-20 relative overflow-hidden">
           <div className="absolute inset-0 bg-hero-pattern bg-cover bg-center opacity-20"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/50"></div>

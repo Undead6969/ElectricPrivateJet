@@ -1,69 +1,74 @@
-# Welcome to your Lovable project
 
-## Project info
+# JetStream - Private Aviation Services
 
-**URL**: https://lovable.dev/projects/b1060e2b-5097-4e37-997b-89efe47a33b9
+## Project Overview
 
-## How can I edit this code?
+JetStream is a modern web application for a premium private aviation company. The platform offers private jet charter services, aircraft management, and exclusive membership programs for high-net-worth individuals and businesses.
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- **Booking System**: Seamless private jet booking experience
+- **Membership Programs**: Tiered membership options with exclusive benefits
+- **Fleet Management**: Browse our diverse fleet of private aircraft
+- **User Accounts**: Manage bookings, preferences, and membership details
+- **Admin Dashboard**: Comprehensive admin tools for managing bookings, users, and content
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b1060e2b-5097-4e37-997b-89efe47a33b9) and start prompting.
+## Technology Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+The application is built with modern web technologies:
 
-**Use your preferred IDE**
+- React with TypeScript
+- TailwindCSS for styling
+- Framer Motion for animations
+- React Router for navigation
+- Tanstack React Query for data fetching
+- Shadcn/UI for component library
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Getting Started
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Prerequisites
 
-Follow these steps:
+- Node.js (v16+) & npm
+
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clone the repository
+git clone <repository-url>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to project directory
+cd jetstream
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Build for Production
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```sh
+# Build the application
+npm run build
 
-**Use GitHub Codespaces**
+# Preview the production build
+npm run preview
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Deployment
 
-## What technologies are used for this project?
+This project is compatible with Vercel. Simply connect your repository to Vercel for automatic deployments.
 
-This project is built with .
+## Project Structure
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- `/src`: Source code
+  - `/components`: Reusable UI components
+  - `/pages`: Page components for routing
+  - `/context`: React context providers
+  - `/hooks`: Custom React hooks
+  - `/lib`: Utility functions and type definitions
 
-## How can I deploy this project?
+## License
 
-Simply open [Lovable](https://lovable.dev/projects/b1060e2b-5097-4e37-997b-89efe47a33b9) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+All rights reserved. This project and its source code are proprietary.

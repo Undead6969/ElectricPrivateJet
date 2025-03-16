@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/AuthContext';
 
 const ProfilePage = () => {
-  const { user, logout } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,12 +26,12 @@ const ProfilePage = () => {
   }, [user, navigate]);
 
   const handleLogout = () => {
-    logout();
+    signOut();
     toast.success('Logged out successfully');
     navigate('/');
   };
 
-  if (!user) {
+  if (!user || !profile) {
     return null; // Will redirect in useEffect
   }
 
@@ -54,33 +54,33 @@ const ProfilePage = () => {
             <div className="bg-card/20 backdrop-blur-sm rounded-lg p-8 border border-border/40 mb-8">
               <div className="flex items-center mb-6">
                 <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center text-2xl font-bold text-primary mr-4">
-                  {user.firstName?.charAt(0) || 'U'}
+                  {profile.first_name?.charAt(0) || 'U'}
                 </div>
                 <div>
                   <h2 className="text-2xl font-semibold">
-                    {user.firstName} {user.lastName}
+                    {profile.first_name} {profile.last_name}
                   </h2>
-                  <p className="text-muted-foreground">{user.email}</p>
-                  <p className="text-xs text-muted-foreground mt-1">Member since {new Date().toLocaleDateString()}</p>
+                  <p className="text-muted-foreground">{profile.email}</p>
+                  <p className="text-xs text-muted-foreground mt-1">Member since {new Date(profile.created_at).toLocaleDateString()}</p>
                 </div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div>
                   <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" value={user.firstName || ''} readOnly className="mt-1 bg-card/40" />
+                  <Input id="firstName" value={profile.first_name || ''} readOnly className="mt-1 bg-card/40" />
                 </div>
                 <div>
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" value={user.lastName || ''} readOnly className="mt-1 bg-card/40" />
+                  <Input id="lastName" value={profile.last_name || ''} readOnly className="mt-1 bg-card/40" />
                 </div>
                 <div>
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" value={user.email} readOnly className="mt-1 bg-card/40" />
+                  <Input id="email" value={profile.email || ''} readOnly className="mt-1 bg-card/40" />
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" value="+91 7338666982" readOnly className="mt-1 bg-card/40" />
+                  <Input id="phone" value={profile.phone || "+91 7338666982"} readOnly className="mt-1 bg-card/40" />
                 </div>
               </div>
               
