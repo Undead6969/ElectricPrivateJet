@@ -7,10 +7,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,7 +35,17 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "Services", href: "/#services" },
+    { 
+      name: "Services", 
+      href: "/services",
+      dropdown: [
+        { name: "Electric Jet Charter", href: "/services#electric-charter" },
+        { name: "Fossil Jet Charter", href: "/services#fossil-charter" },
+        { name: "E-Volt Helicopter", href: "/services#evolt-charter" },
+        { name: "Carbon Offset Program", href: "/services#carbon-offset" },
+        { name: "Membership Benefits", href: "/services#membership-benefits" },
+      ] 
+    },
     { name: "Our Fleet", href: "/fleet" },
     { name: "Membership", href: "/membership" },
     { name: "About", href: "/about" },
@@ -55,22 +71,40 @@ const Navbar = () => {
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link to="/" className="flex items-center">
           <span className="font-display text-xl font-bold text-foreground">
-            SKYLINE<span className="text-primary">JET</span>
+            ELECTRIC<span className="text-primary">PRIVATEJET</span>
           </span>
         </Link>
 
         <div className="hidden md:flex items-center space-x-6">
           {navItems.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
-                isActive(item.href) ? "text-primary" : "text-foreground/80"
-              )}
-            >
-              {item.name}
-            </Link>
+            item.dropdown ? (
+              <DropdownMenu key={item.name}>
+                <DropdownMenuTrigger className="flex items-center text-sm font-medium transition-colors hover:text-primary focus:outline-none">
+                  <span className={isActive(item.href) ? "text-primary" : "text-foreground/80"}>
+                    {item.name}
+                  </span>
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="bg-card/95 backdrop-blur-md border-border/40">
+                  {item.dropdown.map((dropdownItem) => (
+                    <DropdownMenuItem key={dropdownItem.name} asChild className="focus:bg-muted/50 focus:text-foreground">
+                      <Link to={dropdownItem.href}>{dropdownItem.name}</Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={cn(
+                  "text-sm font-medium transition-colors hover:text-primary",
+                  isActive(item.href) ? "text-primary" : "text-foreground/80"
+                )}
+              >
+                {item.name}
+              </Link>
+            )
           ))}
         </div>
 
@@ -86,7 +120,7 @@ const Navbar = () => {
           {user ? (
             <div className="flex items-center space-x-3">
               {isAdmin && (
-                <Link to="/admin">
+                <Link to="/admin-dashboard">
                   <Button variant="outline" size="sm">
                     Admin
                   </Button>
@@ -121,11 +155,11 @@ const Navbar = () => {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="bg-card/80 backdrop-blur-xl">
-            <div className="flex flex-col h-full">
+          <SheetContent side="right" className="bg-card/90 backdrop-blur-xl border-0 p-0">
+            <div className="flex flex-col h-full p-6">
               <div className="flex justify-between items-center mb-8">
                 <span className="font-display text-xl font-bold">
-                  SKYLINE<span className="text-primary">JET</span>
+                  ELECTRIC<span className="text-primary">PRIVATEJET</span>
                 </span>
                 <Button
                   variant="ghost"
@@ -133,23 +167,49 @@ const Navbar = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <X className="h-6 w-6" />
-                  <span className="sr-only">Close menu</span>
                 </Button>
               </div>
 
               <nav className="flex flex-col space-y-6 mb-8">
                 {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={cn(
-                      "text-lg font-medium transition-colors hover:text-primary",
-                      isActive(item.href) ? "text-primary" : "text-foreground/80"
-                    )}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
+                  item.dropdown ? (
+                    <div key={item.name} className="space-y-3">
+                      <Link
+                        to={item.href}
+                        className={cn(
+                          "text-lg font-medium transition-colors hover:text-primary flex items-center",
+                          isActive(item.href) ? "text-primary" : "text-foreground/80"
+                        )}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                      <div className="pl-4 space-y-3 border-l border-border/40">
+                        {item.dropdown.map((dropdownItem) => (
+                          <Link
+                            key={dropdownItem.name}
+                            to={dropdownItem.href}
+                            className="text-sm text-foreground/70 hover:text-primary block transition-colors"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {dropdownItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={cn(
+                        "text-lg font-medium transition-colors hover:text-primary",
+                        isActive(item.href) ? "text-primary" : "text-foreground/80"
+                      )}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  )
                 ))}
               </nav>
 
@@ -165,7 +225,7 @@ const Navbar = () => {
                 {user ? (
                   <div className="flex flex-col space-y-2">
                     {isAdmin && (
-                      <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Link to="/admin-dashboard" onClick={() => setIsMobileMenuOpen(false)}>
                         <Button className="w-full" variant="outline">
                           Admin Dashboard
                         </Button>
@@ -193,7 +253,7 @@ const Navbar = () => {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="w-full"
                   >
-                    <Button className="w-full">Login</Button>
+                    <Button className="w-full bg-primary text-primary-foreground">Login</Button>
                   </Link>
                 )}
               </div>

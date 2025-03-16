@@ -13,6 +13,8 @@ import Fleet from "./pages/Fleet";
 import News from "./pages/News";
 import About from "./pages/About";
 import ProfilePage from "./pages/Profile";
+import Services from "./pages/Services";
+import AdminDashboard from "./pages/AdminDashboard";
 import { AuthProvider } from "./context/AuthContext";
 
 const queryClient = new QueryClient();
@@ -28,11 +30,13 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/membership" element={<Membership />} />
             <Route path="/fleet" element={<Fleet />} />
             <Route path="/news" element={<News />} />
             <Route path="/about" element={<About />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/services" element={<Services />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

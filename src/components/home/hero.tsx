@@ -25,7 +25,7 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      <div className="absolute inset-0 bg-hero-pattern bg-cover bg-center" />
+      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/lovable-uploads/b9ff09e6-e9ba-4030-b471-4c405f3b5d0a.png)' }} />
       <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/70 to-background" />
       
       <div className="container mx-auto px-4 pt-28 pb-12 relative z-10">
@@ -40,7 +40,7 @@ const Hero = () => {
                   variants={fadeIn}
                 >
                   <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/20 text-primary rounded-full mb-3">
-                    Private Jet Charter
+                    Sustainable Electric Aviation
                   </span>
                 </motion.div>
                 
@@ -51,8 +51,8 @@ const Hero = () => {
                   variants={fadeIn}
                   className="text-5xl md:text-6xl lg:text-7xl font-bold font-display leading-tight"
                 >
-                  <span className="block text-gradient gold-glow">Flying Redefined</span>
-                  <span className="block mt-2">Experience the Difference</span>
+                  <span className="block text-gradient gold-glow">Eco-Friendly Flight</span>
+                  <span className="block mt-2">Zero Emissions Travel</span>
                 </motion.h1>
                 
                 <motion.p
@@ -62,9 +62,9 @@ const Hero = () => {
                   variants={fadeIn}
                   className="text-lg md:text-xl text-gray-300 max-w-xl"
                 >
-                  Experience seamless private jet travel with cutting-edge technology, 
-                  sustainable options, and unparalleled service. Elevate your journey,
-                  every time.
+                  Experience the future of aviation with our electric private jets. 
+                  Zero emissions, reduced noise, and unparalleled luxury combined with 
+                  cutting-edge sustainable technology.
                 </motion.p>
                 
                 <motion.div

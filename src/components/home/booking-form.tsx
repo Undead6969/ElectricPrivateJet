@@ -26,20 +26,24 @@ import {
 
 import { motion } from 'framer-motion';
 
-// Popular destinations
-const popularDestinations = [
-  { label: "Mumbai", value: "mumbai" },
-  { label: "Delhi", value: "delhi" },
-  { label: "Bangalore", value: "bangalore" },
-  { label: "Hyderabad", value: "hyderabad" },
-  { label: "Chennai", value: "chennai" },
-  { label: "Goa", value: "goa" },
-  { label: "Jaipur", value: "jaipur" },
-  { label: "Udaipur", value: "udaipur" },
+// Airport list
+const airportsList = [
+  { label: "Mumbai - Chhatrapati Shivaji (BOM)", value: "bom" },
+  { label: "Delhi - Indira Gandhi (DEL)", value: "del" },
+  { label: "Bangalore - Kempegowda (BLR)", value: "blr" },
+  { label: "Hyderabad - Rajiv Gandhi (HYD)", value: "hyd" },
+  { label: "Chennai - Chennai Int'l (MAA)", value: "maa" },
+  { label: "Goa - Dabolim (GOI)", value: "goi" },
+  { label: "Jaipur - Jaipur Int'l (JAI)", value: "jai" },
+  { label: "Ahmedabad - Sardar Vallabhbhai Patel (AMD)", value: "amd" },
+  { label: "Kolkata - Netaji Subhas Chandra Bose (CCU)", value: "ccu" },
+  { label: "Kochi - Cochin Int'l (COK)", value: "cok" },
+  { label: "Pune - Pune Airport (PNQ)", value: "pnq" },
+  { label: "Lucknow - Chaudhary Charan Singh (LKO)", value: "lko" }
 ];
 
 const BookingForm = () => {
-  const [selectedTab, setSelectedTab] = useState('jet');
+  const [selectedTab, setSelectedTab] = useState('electric-jet');
   const [tripType, setTripType] = useState('one-way');
   const [departureDate, setDepartureDate] = useState<Date>();
   const [returnDate, setReturnDate] = useState<Date>();
@@ -65,12 +69,12 @@ const BookingForm = () => {
 
   return (
     <div id="booking" className="glass-card rounded-xl overflow-hidden animate-fade-in">
-      <Tabs defaultValue="jet" onValueChange={setSelectedTab} className="w-full">
+      <Tabs defaultValue="electric-jet" onValueChange={setSelectedTab} className="w-full">
         <div className="bg-muted/50 p-1">
-          <TabsList className="grid grid-cols-2 h-12 bg-transparent">
+          <TabsList className="grid grid-cols-3 h-12 bg-transparent">
             <TabsTrigger 
-              value="jet" 
-              className={`text-sm font-medium ${selectedTab === 'jet' ? 'bg-primary text-primary-foreground' : 'bg-transparent'}`}
+              value="electric-jet" 
+              className={`text-sm font-medium ${selectedTab === 'electric-jet' ? 'bg-primary text-primary-foreground' : 'bg-transparent'}`}
             >
               <motion.div 
                 className="flex items-center justify-center space-x-2"
@@ -88,12 +92,35 @@ const BookingForm = () => {
                   <path d="M4 9V12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M0.5 16.5H6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <span>JET</span>
+                <span>ELECTRIC JET</span>
               </motion.div>
             </TabsTrigger>
             <TabsTrigger 
-              value="helicopter" 
-              className={`text-sm font-medium ${selectedTab === 'helicopter' ? 'bg-primary text-primary-foreground' : 'bg-transparent'}`}
+              value="fossil-jet" 
+              className={`text-sm font-medium ${selectedTab === 'fossil-jet' ? 'bg-primary text-primary-foreground' : 'bg-transparent'}`}
+            >
+              <motion.div 
+                className="flex items-center justify-center space-x-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" className="mr-2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 16.5H8C7.17 16.5 6.5 15.83 6.5 15V4.5C6.5 3.67 7.17 3 8 3H22C22.83 3 23.5 3.67 23.5 4.5V15C23.5 15.83 22.83 16.5 22 16.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M15 16.5V21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M15 16.5H20V21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M0.5 7.5H6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M3.5 4.5V7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 12H6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M4 9V12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M0.5 16.5H6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span>FOSSIL JET</span>
+              </motion.div>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="e-volt" 
+              className={`text-sm font-medium ${selectedTab === 'e-volt' ? 'bg-primary text-primary-foreground' : 'bg-transparent'}`}
             >
               <motion.div 
                 className="flex items-center justify-center space-x-2"
@@ -110,7 +137,7 @@ const BookingForm = () => {
                   <path d="M12 13L4 7H20L12 13Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M12 8L6 4H18L12 8Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <span>HELICOPTER</span>
+                <span>E-VOLT</span>
               </motion.div>
             </TabsTrigger>
           </TabsList>
@@ -201,16 +228,16 @@ const BookingForm = () => {
                   <MapPin className="w-5 h-5 text-muted-foreground mr-2" />
                   <Select value={departure} onValueChange={setDeparture}>
                     <SelectTrigger className="border-0 h-full p-0 focus:ring-0 focus:ring-offset-0 bg-transparent">
-                      <SelectValue placeholder="From where?" />
+                      <SelectValue placeholder="From which airport?" />
                     </SelectTrigger>
-                    <SelectContent className="bg-card border-border">
-                      {popularDestinations.map((destination) => (
+                    <SelectContent className="bg-card border-border max-h-[300px]">
+                      {airportsList.map((airport) => (
                         <SelectItem 
-                          key={destination.value} 
-                          value={destination.value}
+                          key={airport.value} 
+                          value={airport.value}
                           className="focus:bg-accent"
                         >
-                          {destination.label}
+                          {airport.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -223,16 +250,16 @@ const BookingForm = () => {
                   <MapPin className="w-5 h-5 text-muted-foreground mr-2" />
                   <Select value={arrival} onValueChange={setArrival}>
                     <SelectTrigger className="border-0 h-full p-0 focus:ring-0 focus:ring-offset-0 bg-transparent">
-                      <SelectValue placeholder="Where to?" />
+                      <SelectValue placeholder="To which airport?" />
                     </SelectTrigger>
-                    <SelectContent className="bg-card border-border">
-                      {popularDestinations.map((destination) => (
+                    <SelectContent className="bg-card border-border max-h-[300px]">
+                      {airportsList.map((airport) => (
                         <SelectItem 
-                          key={destination.value} 
-                          value={destination.value}
+                          key={airport.value} 
+                          value={airport.value}
                           className="focus:bg-accent"
                         >
-                          {destination.label}
+                          {airport.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -364,10 +391,10 @@ const BookingForm = () => {
               </Button>
             </div>
 
-            {selectedTab === 'jet' && (
+            {selectedTab === 'electric-jet' && (
               <div className="mt-4 flex flex-wrap gap-2 border-t border-border pt-4">
                 <div className="text-xs text-muted-foreground mr-2">
-                  Looking for sustainable options?
+                  Additional options:
                 </div>
                 <div className="flex items-center">
                   <label 
@@ -378,11 +405,12 @@ const BookingForm = () => {
                       id="carbon-offset" 
                       type="checkbox" 
                       className="sr-only" 
+                      defaultChecked
                     />
-                    <div className="relative w-9 h-5 bg-muted rounded-full transition-colors">
-                      <div className="absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform"></div>
+                    <div className="relative w-9 h-5 bg-muted rounded-full transition-colors group-data-[state=checked]:bg-primary">
+                      <div className="absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform group-data-[state=checked]:translate-x-4"></div>
                     </div>
-                    <span className="ml-2 text-xs text-primary">Carbon offset</span>
+                    <span className="ml-2 text-xs text-primary">Fast charging at destination</span>
                   </label>
                 </div>
                 
@@ -399,7 +427,48 @@ const BookingForm = () => {
                     <div className="relative w-9 h-5 bg-muted rounded-full transition-colors">
                       <div className="absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform"></div>
                     </div>
-                    <span className="ml-2 text-xs text-primary">SAF option</span>
+                    <span className="ml-2 text-xs text-primary">Extended range upgrade</span>
+                  </label>
+                </div>
+              </div>
+            )}
+            
+            {selectedTab === 'fossil-jet' && (
+              <div className="mt-4 flex flex-wrap gap-2 border-t border-border pt-4">
+                <div className="text-xs text-muted-foreground mr-2">
+                  Making it green:
+                </div>
+                <div className="flex items-center">
+                  <label 
+                    htmlFor="carbon-offset-fossil" 
+                    className="inline-flex items-center cursor-pointer"
+                  >
+                    <input 
+                      id="carbon-offset-fossil" 
+                      type="checkbox" 
+                      className="sr-only" 
+                    />
+                    <div className="relative w-9 h-5 bg-muted rounded-full transition-colors">
+                      <div className="absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform"></div>
+                    </div>
+                    <span className="ml-2 text-xs text-primary">Carbon offset program</span>
+                  </label>
+                </div>
+                
+                <div className="flex items-center ml-4">
+                  <label 
+                    htmlFor="sustainable-fuel-fossil" 
+                    className="inline-flex items-center cursor-pointer"
+                  >
+                    <input 
+                      id="sustainable-fuel-fossil" 
+                      type="checkbox" 
+                      className="sr-only" 
+                    />
+                    <div className="relative w-9 h-5 bg-muted rounded-full transition-colors">
+                      <div className="absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform"></div>
+                    </div>
+                    <span className="ml-2 text-xs text-primary">Use SAF biofuel blend</span>
                   </label>
                 </div>
               </div>

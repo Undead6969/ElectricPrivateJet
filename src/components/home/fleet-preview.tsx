@@ -1,43 +1,49 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Battery, Zap, Leaf } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-// Sample fleet data
+// Updated fleet data with focus on electric aircraft
 const fleetData = [
   {
     id: 1,
-    name: "Gulfstream G650",
-    category: "Ultra Long Range",
+    name: "E-Gulfstream G650",
+    category: "Long Range Electric Jet",
     image: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=2070&auto=format&fit=crop",
-    passengers: 16,
-    range: "7,000 nm",
-    speed: "Mach 0.925",
-    interior: "Luxurious cabin with 4-zone configuration",
-    sustainable: false
+    passengers: 14,
+    range: "1,200 km",
+    speed: "750 km/h",
+    interior: "Luxurious eco-friendly cabin with sustainable materials",
+    sustainable: true,
+    charging_time: "45 min",
+    emissions: "Zero emissions"
   },
   {
     id: 2,
-    name: "Cessna Citation X",
-    category: "Super Midsize Jet",
+    name: "Eviation Alice",
+    category: "Electric Commuter Aircraft",
     image: "https://images.unsplash.com/photo-1583362625802-1e7b2a98c393?q=80&w=2070&auto=format&fit=crop",
-    passengers: 12,
-    range: "3,460 nm",
-    speed: "Mach 0.935",
-    interior: "Comfortable cabin with advanced amenities",
-    sustainable: true
+    passengers: 9,
+    range: "815 km",
+    speed: "480 km/h",
+    interior: "Spacious cabin with panoramic windows and sustainable design",
+    sustainable: true,
+    charging_time: "30 min",
+    emissions: "Zero emissions"
   },
   {
     id: 3,
-    name: "Bombardier Global 7500",
-    category: "Ultra Long Range",
+    name: "E-Volt HeliTech",
+    category: "Electric Helicopter",
     image: "https://images.unsplash.com/photo-1565816447868-52ef4b4fb35b?q=80&w=2070&auto=format&fit=crop",
-    passengers: 19,
-    range: "7,700 nm",
-    speed: "Mach 0.925",
-    interior: "Sophisticated cabin with 4 living spaces",
-    sustainable: false
+    passengers: 6,
+    range: "400 km",
+    speed: "240 km/h",
+    interior: "Ultra-quiet cabin with premium sustainable furnishings",
+    sustainable: true,
+    charging_time: "25 min",
+    emissions: "Zero emissions"
   },
 ];
 
@@ -60,8 +66,9 @@ const AircraftCard = ({ aircraft, index }: { aircraft: any, index: number }) => 
           className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110" 
         />
         {aircraft.sustainable && (
-          <div className="absolute top-2 right-2 bg-primary/90 text-xs font-medium px-2 py-1 rounded-full text-primary-foreground">
-            Sustainable
+          <div className="absolute top-2 right-2 bg-green-500/90 text-xs font-medium px-2 py-1 rounded-full text-white flex items-center">
+            <Leaf className="w-3 h-3 mr-1" />
+            Zero Emissions
           </div>
         )}
       </div>
@@ -82,6 +89,10 @@ const AircraftCard = ({ aircraft, index }: { aircraft: any, index: number }) => 
           <div>
             <span className="text-muted-foreground">Speed:</span>
             <span className="ml-1 text-foreground">{aircraft.speed}</span>
+          </div>
+          <div className="flex items-center">
+            <Battery className="text-green-400 w-4 h-4 mr-1" />
+            <span className="text-green-400">{aircraft.charging_time} charge</span>
           </div>
         </div>
         
@@ -118,13 +129,13 @@ const FleetPreview = () => {
         >
           <div>
             <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/20 text-primary rounded-full mb-3">
-              Our Fleet
+              Electric Fleet
             </span>
             <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
-              Explore <span className="text-gradient gold-glow">Our Aircraft</span>
+              Explore Our <span className="text-gradient gold-glow">Electric Aircraft</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-xl">
-              From light jets to ultra-long-range aircraft, our diverse fleet ensures the perfect match for your travel needs.
+              The future of aviation is electric. Experience our cutting-edge zero-emission aircraft that deliver luxury without the carbon footprint.
             </p>
           </div>
           
@@ -141,6 +152,20 @@ const FleetPreview = () => {
           {fleetData.map((aircraft, index) => (
             <AircraftCard key={aircraft.id} aircraft={aircraft} index={index} />
           ))}
+        </div>
+        
+        <div className="mt-16 text-center max-w-3xl mx-auto">
+          <div className="p-6 glass-card rounded-xl">
+            <div className="flex items-center justify-center mb-4">
+              <Zap className="text-primary w-8 h-8 mr-2" />
+              <h3 className="text-2xl font-bold">Sustainable Aviation Revolution</h3>
+            </div>
+            <p className="text-muted-foreground">
+              Our electric aircraft produce zero direct emissions, substantially reduce noise pollution, and 
+              feature significantly lower operating costs compared to traditional jets. Join us in revolutionizing 
+              private aviation with sustainable, cutting-edge technology.
+            </p>
+          </div>
         </div>
       </div>
     </section>
