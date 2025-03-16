@@ -35,17 +35,7 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Home", href: "/" },
-    { 
-      name: "Services", 
-      href: "/services",
-      dropdown: [
-        { name: "Electric Jet Charter", href: "/services#electric-charter" },
-        { name: "Fossil Jet Charter", href: "/services#fossil-charter" },
-        { name: "E-Volt Helicopter", href: "/services#evolt-charter" },
-        { name: "Carbon Offset Program", href: "/services#carbon-offset" },
-        { name: "Membership Benefits", href: "/services#membership-benefits" },
-      ] 
-    },
+    { name: "Services", href: "/services" },
     { name: "Our Fleet", href: "/fleet" },
     { name: "Membership", href: "/membership" },
     { name: "About", href: "/about" },
@@ -77,34 +67,16 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center space-x-6">
           {navItems.map((item) => (
-            item.dropdown ? (
-              <DropdownMenu key={item.name}>
-                <DropdownMenuTrigger className="flex items-center text-sm font-medium transition-colors hover:text-primary focus:outline-none">
-                  <span className={isActive(item.href) ? "text-primary" : "text-foreground/80"}>
-                    {item.name}
-                  </span>
-                  <ChevronDown className="ml-1 h-4 w-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="bg-card/95 backdrop-blur-md border-border/40">
-                  {item.dropdown.map((dropdownItem) => (
-                    <DropdownMenuItem key={dropdownItem.name} asChild className="focus:bg-muted/50 focus:text-foreground">
-                      <Link to={dropdownItem.href}>{dropdownItem.name}</Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary",
-                  isActive(item.href) ? "text-primary" : "text-foreground/80"
-                )}
-              >
-                {item.name}
-              </Link>
-            )
+            <Link
+              key={item.name}
+              to={item.href}
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-primary",
+                isActive(item.href) ? "text-primary" : "text-foreground/80"
+              )}
+            >
+              {item.name}
+            </Link>
           ))}
         </div>
 
@@ -172,44 +144,17 @@ const Navbar = () => {
 
               <nav className="flex flex-col space-y-6 mb-8">
                 {navItems.map((item) => (
-                  item.dropdown ? (
-                    <div key={item.name} className="space-y-3">
-                      <Link
-                        to={item.href}
-                        className={cn(
-                          "text-lg font-medium transition-colors hover:text-primary flex items-center",
-                          isActive(item.href) ? "text-primary" : "text-foreground/80"
-                        )}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                      <div className="pl-4 space-y-3 border-l border-border/40">
-                        {item.dropdown.map((dropdownItem) => (
-                          <Link
-                            key={dropdownItem.name}
-                            to={dropdownItem.href}
-                            className="text-sm text-foreground/70 hover:text-primary block transition-colors"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
-                            {dropdownItem.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      className={cn(
-                        "text-lg font-medium transition-colors hover:text-primary",
-                        isActive(item.href) ? "text-primary" : "text-foreground/80"
-                      )}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  )
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={cn(
+                      "text-lg font-medium transition-colors hover:text-primary",
+                      isActive(item.href) ? "text-primary" : "text-foreground/80"
+                    )}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
                 ))}
               </nav>
 

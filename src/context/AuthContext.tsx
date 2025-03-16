@@ -8,13 +8,13 @@ import { Profile } from '@/lib/types';
 const MOCK_USERS = [
   {
     id: "1",
-    email: "admin@skylinejet.com",
-    password: "admin123",
+    email: "admin@electricprivatejet.com",
+    password: "admin123!",
     profile: {
       id: "1",
       first_name: "Admin",
       last_name: "User",
-      email: "admin@skylinejet.com",
+      email: "admin@electricprivatejet.com",
       phone: "+917338666982",
       role: "admin" as const,
       created_at: new Date().toISOString(),
