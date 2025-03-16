@@ -25,7 +25,7 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/lovable-uploads/b9ff09e6-e9ba-4030-b471-4c405f3b5d0a.png)' }} />
+      <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: 'url(/lovable-uploads/8534d732-88cc-48c8-9696-42ed6eb6a103.png)' }} />
       <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/70 to-background" />
       
       <div className="container mx-auto px-4 pt-28 pb-12 relative z-10">
