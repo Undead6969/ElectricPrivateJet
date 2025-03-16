@@ -1,5 +1,5 @@
 
-# JetStream - Private Aviation Services
+# ElectricPrivateJet - Private Aviation Services
 
 ## Project Overview
 
