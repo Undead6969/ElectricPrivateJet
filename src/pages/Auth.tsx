@@ -12,7 +12,6 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { toast } from 'sonner';
 
 // Schema for sign in
 const signInSchema = z.object({

@@ -1,232 +1,205 @@
 
-import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import { Phone, ChevronDown, Menu, X, User } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { useAuth } from '@/context/AuthContext';
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Menu, X, Phone } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { useAuth } from "@/context/AuthContext";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const { user, signOut, isAdmin } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 10);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [location.pathname]);
+  const navItems = [
+    { name: "Home", href: "/" },
+    { name: "Services", href: "/#services" },
+    { name: "Our Fleet", href: "/fleet" },
+    { name: "Membership", href: "/membership" },
+    { name: "About", href: "/about" },
+    { name: "News & Media", href: "/news" },
+  ];
+
+  const isActive = (path: string) => {
+    if (path === "/") {
+      return location.pathname === "/";
+    }
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'nav-glass py-3' : 'bg-transparent py-5'
-      }`}
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
+        isScrolled
+          ? "bg-background/80 backdrop-blur-md py-2 shadow-md"
+          : "bg-transparent py-4"
+      )}
     >
-      <div className="container mx-auto px-4 flex items-center justify-between">
+      <div className="container mx-auto px-4 flex justify-between items-center">
         <Link to="/" className="flex items-center">
-          <span className="text-2xl font-display text-white font-bold">
-            Jet<span className="text-primary">Stream</span>
+          <span className="font-display text-xl font-bold text-foreground">
+            SKYLINE<span className="text-primary">JET</span>
           </span>
         </Link>
 
-        {/* Desktop Menu */}
-        <nav className="hidden lg:flex items-center space-x-6">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-foreground hover:text-primary flex items-center px-2 py-1">
-                Products <ChevronDown className="ml-1 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-sm border-border">
-              <DropdownMenuItem>
-                <Link to="/jet-charter" className="w-full">Jet Charter</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/helicopter-charter" className="w-full">Helicopter Charter</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/empty-legs" className="w-full">Empty Legs</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/sustainable-aviation" className="w-full">Sustainable Aviation</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="hidden md:flex items-center space-x-6">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              to={item.href}
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-primary",
+                isActive(item.href) ? "text-primary" : "text-foreground/80"
+              )}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-foreground hover:text-primary flex items-center px-2 py-1">
-                Services <ChevronDown className="ml-1 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-sm border-border">
-              <DropdownMenuItem>
-                <Link to="/buy-aircraft" className="w-full">Buy Aircraft</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/sell-aircraft" className="w-full">Sell Aircraft</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/maintenance" className="w-full">Maintenance</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/fleet-management" className="w-full">Fleet Management</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <Link to="/fleet" className="text-foreground hover:text-primary px-2 py-1">
-            Our Fleet
-          </Link>
-          
-          <Link to="/membership" className="text-foreground hover:text-primary px-2 py-1">
-            Membership
-          </Link>
-          
-          <Link to="/about" className="text-foreground hover:text-primary px-2 py-1">
-            About
-          </Link>
-          
-          <Link to="/news" className="text-foreground hover:text-primary px-2 py-1">
-            News & Media
-          </Link>
-        </nav>
-
-        <div className="hidden lg:flex items-center space-x-4">
-          <a href="tel:+917338666982" className="flex items-center text-foreground hover:text-primary">
+        <div className="hidden md:flex items-center space-x-4">
+          <a
+            href="tel:+917338666982"
+            className="flex items-center text-sm text-foreground/80 hover:text-primary transition-colors"
+          >
             <Phone className="h-4 w-4 mr-2" />
-            <span>+91-7338666982</span>
+            +91 7338666982
           </a>
           
           {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
-                >
-                  <User className="h-4 w-4 mr-2" />
-                  Account
+            <div className="flex items-center space-x-3">
+              {isAdmin && (
+                <Link to="/admin">
+                  <Button variant="outline" size="sm">
+                    Admin
+                  </Button>
+                </Link>
+              )}
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  Profile
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-sm border-border">
-                <DropdownMenuItem>
-                  <Link to="/profile" className="w-full">My Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/bookings" className="w-full">My Bookings</Link>
-                </DropdownMenuItem>
-                {isAdmin && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <Link to="/admin" className="w-full">Admin Dashboard</Link>
-                    </DropdownMenuItem>
-                  </>
-                )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOut()}>
-                  Sign Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </Link>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={signOut}
+              >
+                Sign Out
+              </Button>
+            </div>
           ) : (
             <Link to="/auth">
-              <Button 
-                variant="outline" 
-                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
-              >
+              <Button variant="outline" className="font-medium">
                 Login
               </Button>
             </Link>
           )}
         </div>
-        
-        {/* Mobile Menu Button */}
-        <button
-          className="lg:hidden text-foreground p-2"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </div>
 
-      {/* Mobile Menu */}
-      <div
-        className={`lg:hidden absolute top-full left-0 right-0 bg-card/95 backdrop-blur-md border-t border-border transition-all duration-300 overflow-hidden ${
-          isMenuOpen ? 'max-h-[80vh] py-4 border-b border-border' : 'max-h-0'
-        }`}
-      >
-        <div className="container mx-auto px-4 space-y-4">
-          <div className="space-y-2">
-            <h3 className="text-primary font-medium text-sm">Products</h3>
-            <div className="pl-4 space-y-2">
-              <Link to="/jet-charter" className="block text-foreground hover:text-primary">Jet Charter</Link>
-              <Link to="/helicopter-charter" className="block text-foreground hover:text-primary">Helicopter Charter</Link>
-              <Link to="/empty-legs" className="block text-foreground hover:text-primary">Empty Legs</Link>
-              <Link to="/sustainable-aviation" className="block text-foreground hover:text-primary">Sustainable Aviation</Link>
-            </div>
-          </div>
-          
-          <div className="space-y-2">
-            <h3 className="text-primary font-medium text-sm">Services</h3>
-            <div className="pl-4 space-y-2">
-              <Link to="/buy-aircraft" className="block text-foreground hover:text-primary">Buy Aircraft</Link>
-              <Link to="/sell-aircraft" className="block text-foreground hover:text-primary">Sell Aircraft</Link>
-              <Link to="/maintenance" className="block text-foreground hover:text-primary">Maintenance</Link>
-              <Link to="/fleet-management" className="block text-foreground hover:text-primary">Fleet Management</Link>
-            </div>
-          </div>
-          
-          <Link to="/fleet" className="block text-foreground hover:text-primary">Our Fleet</Link>
-          <Link to="/membership" className="block text-foreground hover:text-primary">Membership</Link>
-          <Link to="/about" className="block text-foreground hover:text-primary">About</Link>
-          <Link to="/news" className="block text-foreground hover:text-primary">News & Media</Link>
-          
-          <div className="space-y-3 pt-3 border-t border-border">
-            <a href="tel:+917338666982" className="flex items-center text-foreground hover:text-primary">
-              <Phone className="h-4 w-4 mr-2" />
-              <span>+91-7338666982</span>
-            </a>
-            
-            {user ? (
-              <div className="space-y-2">
-                <Link to="/profile" className="block text-foreground hover:text-primary">My Profile</Link>
-                <Link to="/bookings" className="block text-foreground hover:text-primary">My Bookings</Link>
-                {isAdmin && (
-                  <Link to="/admin" className="block text-foreground hover:text-primary">Admin Dashboard</Link>
-                )}
-                <Button 
-                  onClick={() => signOut()}
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetTrigger asChild className="md:hidden">
+            <Button variant="ghost" size="icon">
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">Toggle menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="bg-card/80 backdrop-blur-xl">
+            <div className="flex flex-col h-full">
+              <div className="flex justify-between items-center mb-8">
+                <span className="font-display text-xl font-bold">
+                  SKYLINE<span className="text-primary">JET</span>
+                </span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Sign Out
+                  <X className="h-6 w-6" />
+                  <span className="sr-only">Close menu</span>
                 </Button>
               </div>
-            ) : (
-              <Link to="/auth" className="block">
-                <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                  Login
-                </Button>
-              </Link>
-            )}
-          </div>
-        </div>
+
+              <nav className="flex flex-col space-y-6 mb-8">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={cn(
+                      "text-lg font-medium transition-colors hover:text-primary",
+                      isActive(item.href) ? "text-primary" : "text-foreground/80"
+                    )}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </nav>
+
+              <div className="mt-auto space-y-4">
+                <a
+                  href="tel:+917338666982"
+                  className="flex items-center text-foreground/80 hover:text-primary transition-colors"
+                >
+                  <Phone className="h-5 w-5 mr-2" />
+                  +91 7338666982
+                </a>
+
+                {user ? (
+                  <div className="flex flex-col space-y-2">
+                    {isAdmin && (
+                      <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Button className="w-full" variant="outline">
+                          Admin Dashboard
+                        </Button>
+                      </Link>
+                    )}
+                    <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button className="w-full" variant="outline">
+                        Profile
+                      </Button>
+                    </Link>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full"
+                      onClick={() => {
+                        signOut();
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <Link
+                    to="/auth"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-full"
+                  >
+                    <Button className="w-full">Login</Button>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </header>
   );
