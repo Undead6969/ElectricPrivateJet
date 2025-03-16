@@ -2,18 +2,21 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Phone, ChevronDown, Menu, X } from "lucide-react";
+import { Phone, ChevronDown, Menu, X, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from '@/context/AuthContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut, isAdmin } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -105,18 +108,53 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden lg:flex items-center space-x-4">
-          <a href="tel:+911140845858" className="flex items-center text-foreground hover:text-primary">
+          <a href="tel:+917338666982" className="flex items-center text-foreground hover:text-primary">
             <Phone className="h-4 w-4 mr-2" />
-            <span>+91-11-40845858</span>
+            <span>+91-7338666982</span>
           </a>
-          <Link to="/login">
-            <Button 
-              variant="outline" 
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
-            >
-              Login
-            </Button>
-          </Link>
+          
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Account
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-sm border-border">
+                <DropdownMenuItem>
+                  <Link to="/profile" className="w-full">My Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/bookings" className="w-full">My Bookings</Link>
+                </DropdownMenuItem>
+                {isAdmin && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Link to="/admin" className="w-full">Admin Dashboard</Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => signOut()}>
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link to="/auth">
+              <Button 
+                variant="outline" 
+                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
+              >
+                Login
+              </Button>
+            </Link>
+          )}
         </div>
         
         {/* Mobile Menu Button */}
@@ -161,15 +199,32 @@ const Navbar = () => {
           <Link to="/news" className="block text-foreground hover:text-primary">News & Media</Link>
           
           <div className="space-y-3 pt-3 border-t border-border">
-            <a href="tel:+911140845858" className="flex items-center text-foreground hover:text-primary">
+            <a href="tel:+917338666982" className="flex items-center text-foreground hover:text-primary">
               <Phone className="h-4 w-4 mr-2" />
-              <span>+91-11-40845858</span>
+              <span>+91-7338666982</span>
             </a>
-            <Link to="/login" className="block">
-              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                Login
-              </Button>
-            </Link>
+            
+            {user ? (
+              <div className="space-y-2">
+                <Link to="/profile" className="block text-foreground hover:text-primary">My Profile</Link>
+                <Link to="/bookings" className="block text-foreground hover:text-primary">My Bookings</Link>
+                {isAdmin && (
+                  <Link to="/admin" className="block text-foreground hover:text-primary">Admin Dashboard</Link>
+                )}
+                <Button 
+                  onClick={() => signOut()}
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <Link to="/auth" className="block">
+                <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
