@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import Navbar from '@/components/ui/navbar';
 import Footer from '@/components/layout/footer';
@@ -15,9 +13,111 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Aircraft, Profile, Booking, NewsArticle } from '@/lib/types';
 
+// Mock data
+const mockProfiles: Profile[] = [
+  {
+    id: '1',
+    first_name: 'John',
+    last_name: 'Doe',
+    email: 'john@example.com',
+    role: 'admin',
+    created_at: '2023-01-01T00:00:00Z'
+  },
+  {
+    id: '2',
+    first_name: 'Jane',
+    last_name: 'Smith',
+    email: 'jane@example.com',
+    role: 'user',
+    created_at: '2023-02-15T00:00:00Z'
+  }
+];
+
+const mockBookings: (Booking & { profiles: Pick<Profile, 'first_name' | 'last_name' | 'email'> })[] = [
+  {
+    id: '1',
+    user_id: '2',
+    origin: 'New York',
+    destination: 'Los Angeles',
+    departure_date: '2023-06-15T10:00:00Z',
+    return_date: '2023-06-20T14:00:00Z',
+    passengers: 3,
+    aircraft_id: '1',
+    status: 'confirmed',
+    created_at: '2023-05-01T00:00:00Z',
+    profiles: {
+      first_name: 'Jane',
+      last_name: 'Smith',
+      email: 'jane@example.com'
+    }
+  }
+];
+
+const mockAircraft: Aircraft[] = [
+  {
+    id: '1',
+    name: 'Gulfstream G650',
+    manufacturer: 'Gulfstream Aerospace',
+    model: 'G650',
+    year: 2020,
+    capacity: 16,
+    range: 7000,
+    speed: 956,
+    aircraft_type: 'jet',
+    status: 'available',
+    price_per_hour: 10000,
+    image_url: '/placeholder.svg',
+    description: 'Luxury long-range jet with exceptional performance.'
+  },
+  {
+    id: '2',
+    name: 'Bell 429',
+    manufacturer: 'Bell Helicopter',
+    model: '429',
+    year: 2019,
+    capacity: 7,
+    range: 411,
+    speed: 278,
+    aircraft_type: 'helicopter',
+    status: 'maintenance',
+    price_per_hour: 5000,
+    image_url: '/placeholder.svg',
+    description: 'Modern twin-engine helicopter with spacious cabin.'
+  }
+];
+
+const mockNews: NewsArticle[] = [
+  {
+    id: '1',
+    title: 'New Electric Aircraft Added to Fleet',
+    content: 'We are proud to announce the addition of a new electric aircraft to our sustainable fleet...',
+    category: 'company',
+    published_at: '2023-03-10T00:00:00Z',
+    image_url: '/placeholder.svg',
+    author: 'Admin'
+  },
+  {
+    id: '2',
+    title: 'Aviation Industry Sustainability Report',
+    content: 'A new report shows significant progress in reducing carbon emissions across the aviation industry...',
+    category: 'industry',
+    published_at: '2023-02-18T00:00:00Z',
+    image_url: '/placeholder.svg',
+    author: 'Admin'
+  }
+];
+
 const Admin = () => {
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const [users, setUsers] = useState<Profile[]>(mockProfiles);
+  const [bookings, setBookings] = useState<(Booking & { profiles: Pick<Profile, 'first_name' | 'last_name' | 'email'> })[]>(mockBookings);
+  const [aircraft, setAircraft] = useState<Aircraft[]>(mockAircraft);
+  const [news, setNews] = useState<NewsArticle[]>(mockNews);
+  const [usersLoading, setUsersLoading] = useState(false);
+  const [bookingsLoading, setBookingsLoading] = useState(false);
+  const [aircraftLoading, setAircraftLoading] = useState(false);
+  const [newsLoading, setNewsLoading] = useState(false);
   
   useEffect(() => {
     // Redirect non-admin users
@@ -33,70 +133,13 @@ const Admin = () => {
     window.scrollTo(0, 0);
   }, [user, isAdmin, navigate]);
   
-  const { data: users, isLoading: usersLoading } = useQuery({
-    queryKey: ['admin-users'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      return data as Profile[];
-    },
-    enabled: !!user && isAdmin,
-  });
-  
-  const { data: bookings, isLoading: bookingsLoading } = useQuery({
-    queryKey: ['admin-bookings'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('bookings')
-        .select('*, profiles(first_name, last_name, email)')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      return data as (Booking & { profiles: Pick<Profile, 'first_name' | 'last_name' | 'email'> })[];
-    },
-    enabled: !!user && isAdmin,
-  });
-  
-  const { data: aircraft, isLoading: aircraftLoading } = useQuery({
-    queryKey: ['admin-aircraft'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('aircraft')
-        .select('*')
-        .order('name', { ascending: true });
-      
-      if (error) throw error;
-      return data as Aircraft[];
-    },
-    enabled: !!user && isAdmin,
-  });
-  
-  const { data: news, isLoading: newsLoading } = useQuery({
-    queryKey: ['admin-news'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .order('published_at', { ascending: false });
-      
-      if (error) throw error;
-      return data as NewsArticle[];
-    },
-    enabled: !!user && isAdmin,
-  });
-  
   const updateBookingStatus = async (id: string, status: 'pending' | 'confirmed' | 'cancelled') => {
     try {
-      const { error } = await supabase
-        .from('bookings')
-        .update({ status })
-        .eq('id', id);
-      
-      if (error) throw error;
+      setBookings(prev => 
+        prev.map(booking => 
+          booking.id === id ? { ...booking, status } : booking
+        )
+      );
       toast.success(`Booking status updated to ${status}`);
     } catch (error: any) {
       toast.error(`Failed to update booking: ${error.message}`);
@@ -105,12 +148,11 @@ const Admin = () => {
   
   const updateUserRole = async (id: string, role: 'user' | 'admin') => {
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ role })
-        .eq('id', id);
-      
-      if (error) throw error;
+      setUsers(prev => 
+        prev.map(user => 
+          user.id === id ? { ...user, role } : user
+        )
+      );
       toast.success(`User role updated to ${role}`);
     } catch (error: any) {
       toast.error(`Failed to update user role: ${error.message}`);
@@ -119,12 +161,11 @@ const Admin = () => {
   
   const updateAircraftStatus = async (id: string, status: 'available' | 'maintenance' | 'booked' | 'unavailable') => {
     try {
-      const { error } = await supabase
-        .from('aircraft')
-        .update({ status })
-        .eq('id', id);
-      
-      if (error) throw error;
+      setAircraft(prev => 
+        prev.map(item => 
+          item.id === id ? { ...item, status } : item
+        )
+      );
       toast.success(`Aircraft status updated to ${status}`);
     } catch (error: any) {
       toast.error(`Failed to update aircraft status: ${error.message}`);

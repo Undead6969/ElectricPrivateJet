@@ -2,46 +2,94 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import Navbar from '@/components/ui/navbar';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
-import { Check, X } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { Membership } from '@/lib/types';
 
-const fetchMemberships = async (): Promise<Membership[]> => {
-  const { data, error } = await supabase
-    .from('memberships')
-    .select('*')
-    .order('price_monthly', { ascending: true });
-
-  if (error) {
-    throw new Error(error.message);
+// Mock data
+const mockMemberships: Membership[] = [
+  {
+    id: '1',
+    name: 'Basic',
+    description: 'Essential private aviation services for occasional travelers',
+    price_monthly: 999,
+    price_yearly: 9990,
+    is_popular: false,
+    benefits: [
+      'Access to charter flights',
+      'Basic concierge service',
+      '24/7 customer support',
+      'Standard catering options',
+      'Flexible booking (72 hrs notice)'
+    ]
+  },
+  {
+    id: '2',
+    name: 'Premium',
+    description: 'Enhanced private aviation experience with added flexibility',
+    price_monthly: 2999,
+    price_yearly: 29990,
+    is_popular: true,
+    benefits: [
+      'Priority access to fleet',
+      'Premium concierge service',
+      'Complimentary upgrades when available',
+      'Premium catering options',
+      'Flexible booking (48 hrs notice)',
+      'Dedicated customer manager',
+      'Access to partner lounges'
+    ]
+  },
+  {
+    id: '3',
+    name: 'Elite',
+    description: 'Ultimate private aviation experience with guaranteed availability',
+    price_monthly: 5999,
+    price_yearly: 59990,
+    is_popular: false,
+    benefits: [
+      'Guaranteed aircraft availability',
+      'Elite concierge service',
+      'Complimentary upgrades',
+      'Custom catering options',
+      'Flexible booking (24 hrs notice)',
+      'Dedicated customer manager',
+      'Global lounge access',
+      'Helicopter transfers',
+      'Family member benefits'
+    ]
   }
-
-  return data as Membership[];
-};
+];
 
 const MembershipPage = () => {
   const [isYearly, setIsYearly] = useState(false);
   const { user } = useAuth();
+  const [memberships, setMemberships] = useState<Membership[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
-  const { data: memberships, isLoading, error } = useQuery({
-    queryKey: ['memberships'],
-    queryFn: fetchMemberships,
-  });
-
   useEffect(() => {
+    // Simulate loading
+    setIsLoading(true);
+    
+    // Simulate API call with setTimeout
+    const timer = setTimeout(() => {
+      setMemberships(mockMemberships);
+      setIsLoading(false);
+    }, 1000);
+    
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
+    
+    return () => clearTimeout(timer);
   }, []);
 
-  if (error) {
+  const handleError = (error: any) => {
     toast.error('Failed to load membership plans');
-  }
+  };
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
